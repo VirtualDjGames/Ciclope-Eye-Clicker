@@ -1621,9 +1621,13 @@ MonoBehaviour:
   baseTearsPerClick: 1
   tearsPerClickUpgradePrice: 10
   maxAutoClickers: 2
-  autoClickerPrice: 2000
-  autoClickerUpgradePrice: f4010000f4010000
-  autoClickerUpgradeAmount: 0100000001000000
+  autoClickerPrice: 5000
+  autoClickerUpgradePrice:
+  - 500
+  - 500
+  autoClickerUpgradeAmount:
+  - 1
+  - 1
 --- !u!212 &2023559092
 SpriteRenderer:
   m_ObjectHideFlags: 0

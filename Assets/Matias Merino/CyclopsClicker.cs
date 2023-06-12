@@ -12,16 +12,16 @@ public class CyclopsClicker : MonoBehaviour
     public Button buyAutoClickerButton;
     public Button[] upgradeAutoClickerButtons;
 
-    public int baseTearsPerClick = 1;
-    public int tearsPerClickUpgradePrice = 10;
+    public float baseTearsPerClick = 1f;
+    public float tearsPerClickUpgradePrice = 10f;
 
     public int maxAutoClickers = 2;
-    public int autoClickerPrice = 2000;
-    public int[] autoClickerUpgradePrice;
-    public int[] autoClickerUpgradeAmount;
+    public float autoClickerPrice = 5000f;
+    public float[] autoClickerUpgradePrice;
+    public float[] autoClickerUpgradeAmount;
 
-    private int tearCount;
-    private int tearsPerClickLevel = 1;
+    private float tearCount;
+    private float tearsPerClickLevel = 1f;
     private int autoClickerLevel = 0;
 
     private const string TearsKey = "TearCount";
@@ -62,23 +62,23 @@ public class CyclopsClicker : MonoBehaviour
 
     private void UpdateTearCountText()
     {
-        tearCountText.text = "Lágrimas: " + tearCount.ToString();
+        tearCountText.text = "Lágrimas: " + Mathf.Round(tearCount).ToString();
     }
 
     private void UpdateUpgradePriceText()
     {
-        tearsPerClickUpgradePriceText.text = "Precio mejora Lágrimas/Clic: " + tearsPerClickUpgradePrice.ToString();
-        autoClickerPriceText.text = "Precio subdito: " + autoClickerPrice.ToString();
+        tearsPerClickUpgradePriceText.text = "Precio mejora Lágrimas/Clic: " + Mathf.Round(tearsPerClickUpgradePrice).ToString();
+        autoClickerPriceText.text = "Precio subdito: " + Mathf.Round(autoClickerPrice).ToString();
 
         for (int i = 0; i < maxAutoClickers; i++)
         {
-            autoClickerUpgradePriceTexts[i].text = "Precio mejora subdito " + (i + 1) + ": " + autoClickerUpgradePrice[i].ToString();
+            autoClickerUpgradePriceTexts[i].text = "Precio mejora subdito " + (i + 1) + ": " + Mathf.Round(autoClickerUpgradePrice[i]).ToString();
         }
     }
 
     public void AddTear()
     {
-        tearCount += tearsPerClickLevel * baseTearsPerClick;
+        tearCount += Mathf.Round(tearsPerClickLevel * baseTearsPerClick);
         UpdateTearCountText();
         SaveData();
     }
@@ -88,8 +88,8 @@ public class CyclopsClicker : MonoBehaviour
         if (tearCount >= tearsPerClickUpgradePrice)
         {
             tearCount -= tearsPerClickUpgradePrice;
-            tearsPerClickUpgradePrice *= 2;
-            tearsPerClickLevel*=2;
+            tearsPerClickUpgradePrice *= 1.5f;
+            tearsPerClickLevel *= 1.2f;
             UpdateTearCountText();
             UpdateUpgradePriceText();
             SaveData();
@@ -102,7 +102,7 @@ public class CyclopsClicker : MonoBehaviour
         {
             tearCount -= autoClickerPrice;
             autoClickerLevel++;
-            autoClickerPrice *= 2;
+            autoClickerPrice *= 5f;
             UpdateTearCountText();
             UpdateUpgradePriceText();
             UpdateAutoClickerButtons();
@@ -115,8 +115,8 @@ public class CyclopsClicker : MonoBehaviour
         if (tearCount >= autoClickerUpgradePrice[index])
         {
             tearCount -= autoClickerUpgradePrice[index];
-            autoClickerUpgradeAmount[index] *= 2;
-            autoClickerUpgradePrice[index] *= 2;
+            autoClickerUpgradeAmount[index] += 1f;
+            autoClickerUpgradePrice[index] *= 2f;
             UpdateTearCountText();
             UpdateUpgradePriceText();
             SaveData();
@@ -125,19 +125,19 @@ public class CyclopsClicker : MonoBehaviour
 
     private void SaveData()
     {
-        PlayerPrefs.SetInt(TearsKey, tearCount);
-        PlayerPrefs.SetInt(TearsPerClickLevelKey, tearsPerClickLevel);
+        PlayerPrefs.SetFloat(TearsKey, tearCount);
+        PlayerPrefs.SetFloat(TearsPerClickLevelKey, tearsPerClickLevel);
         PlayerPrefs.SetInt(AutoClickerLevelKey, autoClickerLevel);
-        PlayerPrefs.SetInt(TearsPerClickUpgradePriceKey, tearsPerClickUpgradePrice);
-        PlayerPrefs.SetInt(AutoClickerPriceKey, autoClickerPrice);
+        PlayerPrefs.SetFloat(TearsPerClickUpgradePriceKey, tearsPerClickUpgradePrice);
+        PlayerPrefs.SetFloat(AutoClickerPriceKey, autoClickerPrice);
 
         for (int i = 0; i < maxAutoClickers; i++)
         {
             string upgradePriceKey = AutoClickerUpgradePriceKey + i;
-            PlayerPrefs.SetInt(upgradePriceKey, autoClickerUpgradePrice[i]);
+            PlayerPrefs.SetFloat(upgradePriceKey, autoClickerUpgradePrice[i]);
 
             string upgradeAmountKey = AutoClickerUpgradeAmountKey + i;
-            PlayerPrefs.SetInt(upgradeAmountKey, autoClickerUpgradeAmount[i]);
+            PlayerPrefs.SetFloat(upgradeAmountKey, autoClickerUpgradeAmount[i]);
         }
 
         // Guardar la hora actual en el dispositivo
@@ -150,12 +150,12 @@ public class CyclopsClicker : MonoBehaviour
     {
         if (PlayerPrefs.HasKey(TearsKey))
         {
-            tearCount = PlayerPrefs.GetInt(TearsKey);
+            tearCount = PlayerPrefs.GetFloat(TearsKey);
         }
 
         if (PlayerPrefs.HasKey(TearsPerClickLevelKey))
         {
-            tearsPerClickLevel = PlayerPrefs.GetInt(TearsPerClickLevelKey);
+            tearsPerClickLevel = PlayerPrefs.GetFloat(TearsPerClickLevelKey);
         }
 
         if (PlayerPrefs.HasKey(AutoClickerLevelKey))
@@ -165,12 +165,12 @@ public class CyclopsClicker : MonoBehaviour
 
         if (PlayerPrefs.HasKey(TearsPerClickUpgradePriceKey))
         {
-            tearsPerClickUpgradePrice = PlayerPrefs.GetInt(TearsPerClickUpgradePriceKey);
+            tearsPerClickUpgradePrice = PlayerPrefs.GetFloat(TearsPerClickUpgradePriceKey);
         }
 
         if (PlayerPrefs.HasKey(AutoClickerPriceKey))
         {
-            autoClickerPrice = PlayerPrefs.GetInt(AutoClickerPriceKey);
+            autoClickerPrice = PlayerPrefs.GetFloat(AutoClickerPriceKey);
         }
 
         for (int i = 0; i < maxAutoClickers; i++)
@@ -178,13 +178,13 @@ public class CyclopsClicker : MonoBehaviour
             string upgradePriceKey = AutoClickerUpgradePriceKey + i;
             if (PlayerPrefs.HasKey(upgradePriceKey))
             {
-                autoClickerUpgradePrice[i] = PlayerPrefs.GetInt(upgradePriceKey);
+                autoClickerUpgradePrice[i] = PlayerPrefs.GetFloat(upgradePriceKey);
             }
 
             string upgradeAmountKey = AutoClickerUpgradeAmountKey + i;
             if (PlayerPrefs.HasKey(upgradeAmountKey))
             {
-                autoClickerUpgradeAmount[i] = PlayerPrefs.GetInt(upgradeAmountKey);
+                autoClickerUpgradeAmount[i] = PlayerPrefs.GetFloat(upgradeAmountKey);
             }
         }
     }
@@ -204,14 +204,14 @@ public class CyclopsClicker : MonoBehaviour
         if (autoClickerLevel > 0)
         {
             float timeSinceLastSave = (float)(DateTime.Now - GetLastSaveTime()).TotalSeconds;
-            int totalTearsPerSecond = 0;
+            float totalTearsPerSecond = 0f;
 
             for (int i = 0; i < autoClickerLevel; i++)
             {
-                totalTearsPerSecond += autoClickerUpgradeAmount[i] * 2;
+                totalTearsPerSecond += autoClickerUpgradeAmount[i] * 1.1f;
             }
 
-            int tearsToAdd = (int)(totalTearsPerSecond * timeSinceLastSave);
+            float tearsToAdd = totalTearsPerSecond * timeSinceLastSave;
             tearCount += tearsToAdd;
             UpdateTearCountText();
             SaveData();
@@ -235,18 +235,17 @@ public class CyclopsClicker : MonoBehaviour
         if (autoClickerLevel > 0)
         {
             float timeSinceLastSave = (float)(DateTime.Now - GetLastSaveTime()).TotalSeconds;
-            int totalTearsPerSecond = 0;
+            float totalTearsPerSecond = 0f;
 
             for (int i = 0; i < autoClickerLevel; i++)
             {
-                totalTearsPerSecond += autoClickerUpgradeAmount[i] * 2;
+                totalTearsPerSecond += autoClickerUpgradeAmount[i] * 1.1f;
             }
 
-            int tearsToAdd = (int)(totalTearsPerSecond * timeSinceLastSave);
+            float tearsToAdd = totalTearsPerSecond * timeSinceLastSave;
             tearCount += tearsToAdd;
             UpdateTearCountText();
             SaveData();
         }
     }
-
 }
