@@ -14,7 +14,6 @@ public class CyclopsClicker : MonoBehaviour
 
     public int baseTearsPerClick = 1;
     public int tearsPerClickUpgradePrice = 10;
-    public int tearsPerClickUpgradeAmount = 1;
 
     public int maxAutoClickers = 2;
     public int autoClickerPrice = 2000;
@@ -90,8 +89,7 @@ public class CyclopsClicker : MonoBehaviour
         {
             tearCount -= tearsPerClickUpgradePrice;
             tearsPerClickUpgradePrice *= 2;
-            tearsPerClickUpgradeAmount *= 2;
-            tearsPerClickLevel++;
+            tearsPerClickLevel*=2;
             UpdateTearCountText();
             UpdateUpgradePriceText();
             SaveData();
