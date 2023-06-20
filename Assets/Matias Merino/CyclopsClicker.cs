@@ -11,6 +11,7 @@ public class CyclopsClicker : MonoBehaviour
     public TextMeshProUGUI autoClickerPriceText;
     public Button buyAutoClickerButton;
     public Button[] upgradeAutoClickerButtons;
+    public GameObject[] minionsimage;
 
     public float baseTearsPerClick = 1f;
     public float tearsPerClickUpgradePrice = 10f;
@@ -67,12 +68,12 @@ public class CyclopsClicker : MonoBehaviour
 
     private void UpdateUpgradePriceText()
     {
-        tearsPerClickUpgradePriceText.text = "Precio mejora Lágrimas/Clic: " + Mathf.Round(tearsPerClickUpgradePrice).ToString();
-        autoClickerPriceText.text = "Precio subdito: " + Mathf.Round(autoClickerPrice).ToString();
+        tearsPerClickUpgradePriceText.text = Mathf.Round(tearsPerClickUpgradePrice).ToString();
+        autoClickerPriceText.text = Mathf.Round(autoClickerPrice).ToString();
 
         for (int i = 0; i < maxAutoClickers; i++)
         {
-            autoClickerUpgradePriceTexts[i].text = "Precio mejora subdito " + (i + 1) + ": " + Mathf.Round(autoClickerUpgradePrice[i]).ToString();
+            autoClickerUpgradePriceTexts[i].text = (i + 1) + Mathf.Round(autoClickerUpgradePrice[i]).ToString();
         }
     }
 
@@ -89,7 +90,7 @@ public class CyclopsClicker : MonoBehaviour
         {
             tearCount -= tearsPerClickUpgradePrice;
             tearsPerClickUpgradePrice *= 1.5f;
-            tearsPerClickLevel *= 1.2f;
+            tearsPerClickLevel *= 1.3f;
             UpdateTearCountText();
             UpdateUpgradePriceText();
             SaveData();
@@ -196,6 +197,7 @@ public class CyclopsClicker : MonoBehaviour
         for (int i = 0; i < maxAutoClickers; i++)
         {
             upgradeAutoClickerButtons[i].gameObject.SetActive(i < autoClickerLevel);
+            minionsimage[i].gameObject.SetActive(i < autoClickerLevel);
         }
     }
 
