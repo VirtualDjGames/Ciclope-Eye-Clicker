@@ -4,69 +4,98 @@ using UnityEngine;
 
 public class Contador : MonoBehaviour
 {
-    //addtear agregar lagrima
+    // Agregar lagrima
     int Clicks;
-    int Click;
     public GameObject[] Ciclopes;
+    private int activeImageIndex = 0;
+    private string ClicksKey = "Clicks";
+    private string ActiveImageIndexKey = "ActiveImageIndex";
+
+    private void Start()
+    {
+        LoadData();
+        UpdateActiveImage();
+    }
 
     public void Clickear_Ojo()
     {
-        Click++;
         Clicks++;
         Cambio();
+        SaveData();
     }
-    
+
     void Cambio()
     {
         if (Clicks >= 100)
         {
-            Ciclopes[2].SetActive(true);
+            activeImageIndex = 2;
         }
-        else if (Clicks >= 200)
+        if (Clicks >= 200)
         {
-            Ciclopes[2].SetActive(false);
-            Ciclopes[3].SetActive(true);
+            activeImageIndex = 3;
         }
-        else if (Clicks >= 300)
+        if (Clicks >= 300)
         {
-            Ciclopes[3].SetActive(false);
-            Ciclopes[4].SetActive(true);
+            activeImageIndex = 4;
         }
-        else if (Clicks >= 400)
+        if (Clicks >= 400)
         {
-            Ciclopes[4].SetActive(false);
-            Ciclopes[5].SetActive(true);
+            activeImageIndex = 5;
         }
-        else if (Clicks >= 500)
+        if (Clicks >= 500)
         {
-            Ciclopes[5].SetActive(false);
-            Ciclopes[6].SetActive(true);
+            activeImageIndex = 6;
         }
-        else if (Clicks >= 600)
+        if (Clicks >= 600)
         {
-            Ciclopes[6].SetActive(false);
-            Ciclopes[7].SetActive(true);
+            activeImageIndex = 7;
         }
-        else if (Clicks >= 700)
+        if (Clicks >= 700)
         {
-            Ciclopes[7].SetActive(false);
-            Ciclopes[8].SetActive(true);
+            activeImageIndex = 8;
         }
-        else if (Clicks >= 800)
+        if (Clicks >= 800)
         {
-            Ciclopes[8].SetActive(false);
-            Ciclopes[9].SetActive(true);
+            activeImageIndex = 9;
         }
-        else if (Clicks >= 900)
+        if (Clicks >= 900)
         {
-            Ciclopes[9].SetActive(false);
-            Ciclopes[10].SetActive(true);
+            activeImageIndex = 10;
         }
-        else if (Clicks >= 1000)
+        if (Clicks >= 1000)
         {
             Clicks = 0;
+            activeImageIndex = 0;
+        }
+
+        UpdateActiveImage();
+    }
+
+    private void UpdateActiveImage()
+    {
+        for (int i = 0; i < Ciclopes.Length; i++)
+        {
+            Ciclopes[i].SetActive(i == activeImageIndex);
         }
     }
 
+    private void SaveData()
+    {
+        PlayerPrefs.SetInt(ClicksKey, Clicks);
+        PlayerPrefs.SetInt(ActiveImageIndexKey, activeImageIndex);
+        PlayerPrefs.Save();
+    }
 
+    private void LoadData()
+    {
+        if (PlayerPrefs.HasKey(ClicksKey))
+        {
+            Clicks = PlayerPrefs.GetInt(ClicksKey);
+        }
+
+        if (PlayerPrefs.HasKey(ActiveImageIndexKey))
+        {
+            activeImageIndex = PlayerPrefs.GetInt(ActiveImageIndexKey);
+        }
+    }
 }
