@@ -6,11 +6,12 @@ public class Contador : MonoBehaviour
 {
     //addtear agregar lagrima
     int Clicks;
+    int Click;
     public GameObject[] Ciclopes;
 
     public void Clickear_Ojo()
     {
-        //9
+        Click++;
         Clicks++;
         Cambio();
     }

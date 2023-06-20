@@ -63,7 +63,7 @@ public class CyclopsClicker : MonoBehaviour
 
     private void UpdateTearCountText()
     {
-        tearCountText.text = "Lágrimas: " + Mathf.Round(tearCount).ToString();
+        tearCountText.text =  Mathf.Round(tearCount).ToString();
     }
 
     private void UpdateUpgradePriceText()
